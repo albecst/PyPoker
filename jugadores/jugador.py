@@ -1,4 +1,4 @@
-import constantes as const
+import ajustes.constantes as const
 
 class Jugador:
     def __init__(self, nombre, dinero):
@@ -7,6 +7,7 @@ class Jugador:
         self.cartas = []
 
     def toString(self):
+        print()
         return f'{self.nombre} --> {self.dinero}, Cartas: {", ".join([carta.toString() for carta in self.cartas])}'
 
     def sumar_dinero(self, dinero_ganado):

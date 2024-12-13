@@ -13,9 +13,12 @@ class Jugador:
         }
         self.dinero = self.calcular_dinero_total()
 
-    def toString(self):
+    def toString1(self):
         fichas_str = ', '.join([f'{cantidad} fichas de {denominacion} créditos' for denominacion, cantidad in self.monedas.items()])
         return f'{self.nombre} --> \n{self.dinero} créditos ({fichas_str}).\nCartas: {", ".join([carta.toString() for carta in self.cartas])}.\n'
+
+    def toString2(self):
+        return f'{self.nombre} --> {self.dinero} créditos.\n'
 
     # def sumar_dinero(self, dinero_ganado):
     #     self.dinero += dinero_ganado

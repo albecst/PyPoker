@@ -20,10 +20,13 @@ class Baraja:
 def inicializar_juego():
     baraja = Baraja()
     
-    j.añadir_jugador(j.Jugador('Alberto'))
-    j.añadir_jugador(j.Jugador('Rafi'))
-    j.añadir_jugador(j.Jugador('Silvia'))
-    j.añadir_jugador(j.Jugador('Rose'))
+    num_jugadores = int(input("Introduce el número de jugadores (máximo 4): "))
+    if num_jugadores > const.num_jugadores_max:
+        num_jugadores = const.num_jugadores_max
+    
+    for i in range(num_jugadores):
+        nombre = input(f"Introduce el nombre del jugador {i + 1}: ")
+        j.añadir_jugador(j.Jugador(nombre))
     
     return baraja, j.jugadores
 

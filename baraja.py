@@ -6,6 +6,7 @@ import random
 class Baraja:
     def __init__(self):
         self.cartas = [c.Carta(palo, valor) for palo in c.Carta.getPalos() for valor in c.Carta.getValores()]
+        random.shuffle(self.cartas)
 
     def repartir(self):
         return self.cartas.pop()

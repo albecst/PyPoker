@@ -51,16 +51,24 @@ def main():
 
         opcion = int(input(f'Jugador {jugadores[jugador_actual].nombre}, introduce una opción: '))
         print()
-        if opcion == 1 and jugadores[jugador_actual].apuesta_actual >= const.apuesta_actual:
-            os.clear_console()
-            m.check(jugadores[jugador_actual])
-            jugador_actual = (jugador_actual + 1) % len(jugadores)
-            print(jugadores[jugador_actual].toString1())
-            num_jugadores_restantes_por_preguntar -= 1
-
-        elif opcion == 1 and jugadores[jugador_actual].apuesta_actual < const.apuesta_actual:
-            os.clear_console()
-            print('No puedes hacer check si no has igualado o superado la apuesta.')
+        
+        if opcion == 1:
+            if jugadores[jugador_actual].apuesta_actual >= const.apuesta_actual:
+                os.clear_console()
+                m.check(jugadores[jugador_actual])
+                jugador_actual = (jugador_actual + 1) % len(jugadores)
+                print(jugadores[jugador_actual].toString1())
+                num_jugadores_restantes_por_preguntar -= 1
+            elif ronda > 1 and const.apuesta_actual == 0:
+                os.clear_console()
+                m.check(jugadores[jugador_actual])
+                jugador_actual = (jugador_actual + 1) % len(jugadores)
+                print(jugadores[jugador_actual].toString1())
+                num_jugadores_restantes_por_preguntar -= 1
+            else:
+                os.clear_console()
+                print('No puedes hacer check si no has igualado o superado la apuesta.')
+        
 
         elif opcion == 2:
             os.clear_console()
@@ -160,28 +168,29 @@ def main():
             print('Opción no válida. Inténtalo de nuevo.')
         
         # Verificar si todos los jugadores han igualado la apuesta o se han retirado
-        if all(jugador.ha_igualado_apuesta() or jugador.apuesta_actual == 0 for jugador in jugadores if jugador.apuesta_actual > 0) and opcion in (1, 2, 3, 4) and num_jugadores_restantes_por_preguntar == 0:
+        if all(jugador.ha_igualado_apuesta() or jugador.apuesta_actual == 0 for jugador in jugadores if jugador.apuesta_actual > 0) and num_jugadores_restantes_por_preguntar == 0:
             if ronda == 1:
                 ronda += 1
                 os.clear_console()
                 print(f'Mesa --> Cartas: {", ".join([carta.toString() for carta in mesa])}')  # Información sobre la mesa
+                num_jugadores_restantes_por_preguntar = jugadores_activos
             elif ronda == 2:
                 mesa.append(g.mostrar_turn(baraja))
                 ronda += 1
+                num_jugadores_restantes_por_preguntar = jugadores_activos
             elif ronda == 3:
                 mesa.append(g.mostrar_river(baraja))
+                num_jugadores_restantes_por_preguntar = jugadores_activos
                 ronda += 1
             elif ronda == 4:
                 g.mostrar_showdown(jugadores, mesa)
+                num_jugadores_restantes_por_preguntar = jugadores_activos
                 break 
             
         # Si solo queda un jugador activo, termina la ronda (por si hacen todos check o fold)
         if jugadores_activos == 1:
             g.mostrar_showdown(jugadores, mesa)
             break
-        
-        
-        
         
 if __name__ == "__main__":
     main()

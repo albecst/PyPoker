@@ -20,3 +20,5 @@ monedas_de_100_iniciales = 4
 denominaciones = [5, 10, 25, 50, 100]
 
 apuesta_actual = 0
+
+apuesta_total = 0

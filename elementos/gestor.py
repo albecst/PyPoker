@@ -22,7 +22,13 @@ def inicializar_juego():
     
     num_jugadores = int(input("Introduce el número de jugadores (máximo 4): "))
     if num_jugadores > const.num_jugadores_max:
+        print(f"El número de jugadores no puede ser mayor a {const.num_jugadores_max}. Se asignarán {const.num_jugadores_max} jugadores.")
         num_jugadores = const.num_jugadores_max
+    
+    elif num_jugadores < const.num_jugadores_min:
+        print(f"El número de jugadores no puede ser menor a {const.num_jugadores_min}. Se asignarán {const.num_jugadores_min} jugadores.")
+        num_jugadores = const.num_jugadores_min
+    
     
     for i in range(num_jugadores):
         nombre = input(f"Introduce el nombre del jugador {i + 1}: ")

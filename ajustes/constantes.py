@@ -1,5 +1,6 @@
 num_jugadores = 0
 num_jugadores_max = 4
+num_jugadores_min = 2
 #num_bots = 3
 #num_jugador_real = 1
 
@@ -15,3 +16,7 @@ monedas_de_10_iniciales = 10
 monedas_de_25_iniciales = 8
 monedas_de_50_iniciales = 5
 monedas_de_100_iniciales = 4
+
+denominaciones = [5, 10, 25, 50, 100]
+
+apuesta_actual = 0

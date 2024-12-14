@@ -5,10 +5,29 @@ def check(jugador):
 
 def call(jugador):
     print(f'{jugador.nombre} ha hecho call.')
+    jugador.apuesta_actual = const.apuesta_actual
 
 def raise_bet(jugador, cantidad):
     print(f'{jugador.nombre} ha hecho raise de {cantidad} créditos.')
-    jugador.sumar_dinero(-cantidad)
+    total_apostado = 0
+    monedas_apostadas = {}
+
+    for denominacion in sorted(const.denominaciones, reverse=True):
+        if total_apostado < cantidad:
+            max_monedas = (cantidad - total_apostado) // denominacion
+            num_monedas = min(max_monedas, jugador.monedas[denominacion])
+            monedas_apostadas[denominacion] = num_monedas
+            total_apostado += num_monedas * denominacion
+            if total_apostado >= 5:
+                print(f'Llevas apostados {total_apostado} créditos.')
+
+    if total_apostado >= cantidad:
+        for denominacion, num_monedas in monedas_apostadas.items():
+            jugador.eliminar_fichas(denominacion, num_monedas)
+        jugador.apuesta_actual += cantidad
+        const.apuesta_actual = max(const.apuesta_actual, jugador.apuesta_actual)
+    else:
+        print(f'No se pudo completar la apuesta de {cantidad} créditos. Solo se apostaron {total_apostado} créditos.')
 
 def fold(jugador):
     print(f'{jugador.nombre} ha hecho fold.')
@@ -16,3 +35,7 @@ def fold(jugador):
 def añadir_creditos(jugador, cantidad):
     jugador.sumar_dinero(cantidad)
     print(f'{jugador.nombre} ha añadido {cantidad} créditos.')
+
+def all_in(jugador):
+    cantidad = jugador.dinero
+    raise_bet(jugador, cantidad)

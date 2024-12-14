@@ -14,10 +14,13 @@ class Jugador:
         self.dinero = self.calcular_dinero_total()
         self.apuesta_actual = 0
 
-    def toString(self):
+    def toString1(self):
         fichas_str = ', '.join([f'{cantidad} fichas de {denominacion} créditos' for denominacion, cantidad in self.monedas.items()])
-        return f'{self.nombre} --> {self.dinero} créditos ({fichas_str}), Cartas: {", ".join([carta.toString() for carta in self.cartas])}'
+        return f'{self.nombre} --> \n{self.dinero} créditos ({fichas_str}).\nCartas: {", ".join([carta.toString() for carta in self.cartas])}.'
 
+    def toString2(self):
+        return f'{self.nombre} --> {self.dinero} créditos.\n'
+    
     def sumar_dinero(self, dinero_ganado):
         self.dinero += dinero_ganado
         self.monedas = self.convertir_a_monedas(self.dinero)
@@ -43,6 +46,14 @@ class Jugador:
 
     def ha_igualado_apuesta(self):
         return self.apuesta_actual >= const.apuesta_actual
+    
+    def eliminar_fichas(self, denominacion, cantidad):
+        if self.monedas[denominacion] >= cantidad:
+            self.monedas[denominacion] -= cantidad
+            self.dinero -= denominacion * cantidad
+        else:
+            raise ValueError(f'No hay suficientes fichas de {denominacion} créditos.')
+
 
 jugadores = []
 

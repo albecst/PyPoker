@@ -3,7 +3,7 @@ import ajustes.constantes as const
 import ui_ux.prints as p
 import elementos.jugador as j
 import logica.mecanicas as m
-import sysWOW as os
+import ui_ux.sysWOW as os
 
 def iniciar_juego_con_jugadores():
     baraja, jugadores = g.inicializar_juego()
@@ -36,12 +36,14 @@ def main():
     opcion = 0
     ronda = 1 # Ronda de apuestas: 1 = preflop, 2 = flop, 3 = turn, 4 = river
     jugadores_activos = len(jugadores)
+    num_jugadores_restantes_por_preguntar = len(jugadores)
     os.clear_console()
 
     print(jugadores[jugador_actual].toString1())
     # Inicializar las ciegas
     m.raise_bet(jugadores[0], 5)  # Small blind
     m.raise_bet(jugadores[1], 10)  # Big blind
+    jugador_actual = 2 % len(jugadores)
 
     while opcion != -1:
         print(f'\n*** Ronda: {ronda} ***')
@@ -54,6 +56,7 @@ def main():
             m.check(jugadores[jugador_actual])
             jugador_actual = (jugador_actual + 1) % len(jugadores)
             print(jugadores[jugador_actual].toString1())
+            num_jugadores_restantes_por_preguntar -= 1
 
         elif opcion == 1 and jugadores[jugador_actual].apuesta_actual < const.apuesta_actual:
             os.clear_console()
@@ -64,6 +67,7 @@ def main():
             m.call(jugadores[jugador_actual])
             jugador_actual = (jugador_actual + 1) % len(jugadores)
             print(jugadores[jugador_actual].toString1())
+            num_jugadores_restantes_por_preguntar -= 1
         
         elif opcion == 3:
             opcion = 0
@@ -108,6 +112,11 @@ def main():
                     print('No has añadido créditos. Tienes que añadir al menos 5 créditos.')
                 else:
                     print('Opción no válida. Inténtalo de nuevo.')
+            if not jugadores[jugador_actual].ha_igualado_apuesta():
+                num_jugadores_restantes_por_preguntar = jugadores_activos - 1
+            else:
+                num_jugadores_restantes_por_preguntar -= 1
+                
             jugador_actual = (jugador_actual + 1) % len(jugadores)
             print(jugadores[jugador_actual].toString1())
         
@@ -151,7 +160,7 @@ def main():
             print('Opción no válida. Inténtalo de nuevo.')
         
         # Verificar si todos los jugadores han igualado la apuesta o se han retirado
-        if all(jugador.ha_igualado_apuesta() or jugador.apuesta_actual == 0 for jugador in jugadores if jugador.apuesta_actual > 0) and opcion in (1, 2, 3, 4):
+        if all(jugador.ha_igualado_apuesta() or jugador.apuesta_actual == 0 for jugador in jugadores if jugador.apuesta_actual > 0) and opcion in (1, 2, 3, 4) and num_jugadores_restantes_por_preguntar == 0:
             if ronda == 1:
                 ronda += 1
                 os.clear_console()

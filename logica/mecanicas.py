@@ -1,7 +1,7 @@
 import ajustes.constantes as const
 
 def check(jugador):
-    print(f'{jugador.nombre} ha hecho check.')
+    print(f'{jugador.nombre} ha hecho check.\n')
 
 def call(jugador):
     cantidad_a_igualar = const.apuesta_actual - jugador.apuesta_actual
@@ -23,7 +23,7 @@ def raise_bet(jugador, cantidad):
             monedas_apostadas[denominacion] = num_monedas
             total_apostado += num_monedas * denominacion
             if total_apostado >= 5:
-                print(f'Llevas apostados {total_apostado} créditos.\n')
+                print(f'{jugador.nombre}, llevas apostados {total_apostado} créditos.\n')
 
     if total_apostado >= cantidad:
         for denominacion, num_monedas in monedas_apostadas.items():

@@ -38,6 +38,7 @@ def inicializar_juego():
 
 # Descripción: Función que reparte cartas a los jugadores. Cada jugador recibe dos cartas.
 def repartir_cartas(baraja, jugadores):
+    const.num_cartas_restantes = 52
     for jugador in jugadores:
         while len(jugador.cartas) < const.num_cartas_por_jugador:
             carta = baraja.robar_carta()
@@ -47,6 +48,8 @@ def repartir_cartas(baraja, jugadores):
 # Descripción: Función que coloca cartas sobre la mesa. Inicialmente coloca tres cartas.
 def cartas_sobre_mesa(baraja):
     mesa = []
+    const.num_cartas_presentes_en_mesa = 0
+    const.num_cartas_restantes = 52
     while const.num_cartas_presentes_en_mesa < 3:
         carta = baraja.robar_carta()
         mesa.append(carta)
@@ -75,7 +78,7 @@ def mostrar_river(baraja):
 
 # Descripción: Función que muestra el showdown. Muestra las cartas de cada jugador y calcula el ganador.
 def mostrar_showdown(jugadores, mesa):
-    print('Showdown:')
+    print('Resultados:')
     print(f'Mesa --> Cartas: {", ".join([carta.toString() for carta in mesa])}')
     for jugador in jugadores:
         print(f'{jugador.nombre} --> Cartas: {", ".join([carta.toString() for carta in jugador.cartas])}')

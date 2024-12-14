@@ -18,38 +18,48 @@ def iniciar_juego_con_jugadores():
     
     return baraja, jugadores, mesa
 
-def reiniciar_partida(jugadores):
-    baraja = g.Baraja
+def reiniciar_partida(jugadores, dealer):
+    baraja = g.Baraja()
     g.repartir_cartas(baraja, jugadores)
+    mesa = []
     mesa = g.cartas_sobre_mesa(baraja)
-    return baraja, jugadores, mesa
+    dealer = (dealer + 1) % len(jugadores)
+    return baraja, jugadores, mesa, dealer
 
 def main():
     partida = 1
     opcion = 0
     jugador_actual = 0
     dinero_en_juego = 0
+    dealer = 0
+    
+    os.clear_console()
 
-    p.print_opciones_inicio()
-    opcion = int(input('Introduce una opción: '))
-
+    
     while opcion != -1:
+        p.print_opciones_inicio()
+        opcion = int(input('Introduce una opción: '))
         if opcion == 1:
+            os.clear_console()
             baraja, jugadores, mesa = iniciar_juego_con_jugadores()
+            modo = 1
             break
         elif opcion == 2:
+            os.clear_console()
             print('Opción aún no disponible.')
-            break 
+            modo = 2
         elif opcion == 3:
+            os.clear_console()
             print('Saliendo del juego...')
             break
         else:
+            os.clear_console()
             print('Opción no válida. Inténtalo de nuevo.')
 
-    while True:
+    while modo == 1:
         os.clear_console()
-        print(f'Partida {partida}')
-                
+        
+
         opcion = 0
         ronda = 1 # Ronda de apuestas: 1 = preflop, 2 = flop, 3 = turn, 4 = river
         jugadores_activos = len(jugadores)
@@ -58,16 +68,20 @@ def main():
 
         # Inicializar las ciegas
         sleep(1)
-        m.raise_bet(jugadores[0], 5)  # Small blind
+        small_blind = (dealer) % len(jugadores)
+        big_blind = (dealer + 1) % len(jugadores)
+        m.raise_bet(jugadores[small_blind], 5)  # Small blind
         sleep(1)
-        m.raise_bet(jugadores[1], 10)  # Big blind
-        jugador_actual = 2 % len(jugadores)
+        m.raise_bet(jugadores[big_blind], 10)  # Big blind
+        jugador_actual = (dealer + 2) % len(jugadores)
         print('Cargando', end = '', flush=True)
         for i in range(0, 4):
             sleep(0.5)
             print('.', end='', flush=True)
         print()
         os.clear_console()
+        
+        print(f'Partida {partida}')
 
         while opcion != -1 or ronda <= 4:
             print(f'\n*** Ronda: {ronda} ***')
@@ -92,13 +106,11 @@ def main():
                     os.clear_console()
                     m.check(jugadores[jugador_actual])
                     jugador_actual = (jugador_actual + 1) % len(jugadores)
-                    print(jugadores[jugador_actual].toString1())
                     num_jugadores_restantes_por_preguntar -= 1
                 elif ronda > 1 and const.apuesta_actual == 0:
                     os.clear_console()
                     m.check(jugadores[jugador_actual])
                     jugador_actual = (jugador_actual + 1) % len(jugadores)
-                    print(jugadores[jugador_actual].toString1())
                     num_jugadores_restantes_por_preguntar -= 1
                 else:
                     os.clear_console()
@@ -108,12 +120,15 @@ def main():
                 os.clear_console()
                 m.call(jugadores[jugador_actual])
                 jugador_actual = (jugador_actual + 1) % len(jugadores)
-                print(jugadores[jugador_actual].toString1())
                 num_jugadores_restantes_por_preguntar -= 1
+                sleep(2.5)
+                os.clear_console()
             
             elif opcion == 3:
                 opcion = 0
                 while opcion != 11:
+                    os.clear_console()
+                    print(f'Apuesta actual: {const.apuesta_actual} créditos.\n')
                     p.print_opciones_apuestas()
                     opcion = int(input('Introduce una opción: '))
                     if opcion == 1:
@@ -158,14 +173,13 @@ def main():
                         print('Opción no válida. Inténtalo de nuevo.')
                     
                 jugador_actual = (jugador_actual + 1) % len(jugadores)
-                print(jugadores[jugador_actual].toString1())
             
             elif opcion == 4:
                 os.clear_console()
                 m.fold(jugadores[jugador_actual])
                 jugadores_activos -= 1
+                num_jugadores_restantes_por_preguntar -= 1
                 jugador_actual = (jugador_actual + 1) % len(jugadores)
-                print(jugadores[jugador_actual].toString1())
             
             elif opcion == 5:
                 os.clear_console()
@@ -194,6 +208,7 @@ def main():
                     print('No se pueden añadir más jugadores.')
             
             elif opcion == 9 and ronda > 1:
+                os.clear_console()
                 os.clear_console()
                 print(jugadores[jugador_actual].toString1())
                 print(f'\nMesa --> Cartas: {", ".join([carta.toString() for carta in mesa])}')
@@ -236,7 +251,7 @@ def main():
         
         # Incrementar el número de la partida y reiniciar la partida
         partida += 1
-        baraja, jugadores, mesa = reiniciar_partida(jugadores)
+        baraja, jugadores, mesa, dealer = reiniciar_partida(jugadores, dealer)
 
 if __name__ == "__main__":
     main()

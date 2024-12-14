@@ -56,27 +56,27 @@ def cartas_sobre_mesa(baraja):
 
 # Descripción: Función que muestra las cartas sobre la mesa.
 def mostrar_flop(baraja):
-    flop = []
-    for _ in range(3):
-        flop.append(baraja.robar_carta())
-    print(f'Flop --> Cartas: {", ".join([carta.toString() for carta in flop])}')
-    return flop
+    print('Baraja: ')
+    print(baraja)
 
 # Descripción: Función que muestra la cuarta carta sobre la mesa.
 def mostrar_turn(baraja):
-    turn = [baraja.robar_carta()]
-    print(f'Turn --> Carta: {turn[0].toString()}')
+    turn = baraja.robar_carta()
+    print(f'Turn --> Carta: {turn.toString()}')
+    const.num_cartas_restantes -= 1
     return turn
 
 # Descripción: Función que muestra la quinta carta sobre la mesa.
 def mostrar_river(baraja):
-    river = [baraja.robar_carta()]
-    print(f'River --> Carta: {river[0].toString()}')
+    river = baraja.robar_carta()
+    print(f'River --> Carta: {river.toString()}')
+    const.num_cartas_restantes -= 1
     return river
 
 # Descripción: Función que muestra el showdown. Muestra las cartas de cada jugador y calcula el ganador.
 def mostrar_showdown(jugadores, mesa):
     print('Showdown:')
+    print(f'Mesa --> Cartas: {", ".join([carta.toString() for carta in mesa])}')
     for jugador in jugadores:
         print(f'{jugador.nombre} --> Cartas: {", ".join([carta.toString() for carta in jugador.cartas])}')
     # TODO: Lógica para calcular el ganador

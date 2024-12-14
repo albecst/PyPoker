@@ -4,10 +4,15 @@ def check(jugador):
     print(f'{jugador.nombre} ha hecho check.')
 
 def call(jugador):
-    print(f'{jugador.nombre} ha hecho call.')
-    jugador.apuesta_actual = const.apuesta_actual
+    cantidad_a_igualar = const.apuesta_actual - jugador.apuesta_actual
+    if cantidad_a_igualar > 0:
+        print(f'{jugador.nombre} ha hecho call de {cantidad_a_igualar} créditos.')
+        raise_bet(jugador, cantidad_a_igualar)
+    else:
+        print(f'{jugador.nombre} ya está igualado con la apuesta actual.')
 
 def raise_bet(jugador, cantidad):
+    print()
     print(f'{jugador.nombre} ha hecho raise de {cantidad} créditos.')
     total_apostado = 0
     monedas_apostadas = {}
@@ -19,7 +24,7 @@ def raise_bet(jugador, cantidad):
             monedas_apostadas[denominacion] = num_monedas
             total_apostado += num_monedas * denominacion
             if total_apostado >= 5:
-                print(f'Llevas apostados {total_apostado} créditos.')
+                print(f'Llevas apostados {total_apostado} créditos.\n')
 
     if total_apostado >= cantidad:
         for denominacion, num_monedas in monedas_apostadas.items():

@@ -10,12 +10,6 @@ def iniciar_juego_con_jugadores():
     baraja, jugadores = g.inicializar_juego()
     g.repartir_cartas(baraja, jugadores)
     mesa = g.cartas_sobre_mesa(baraja)
-    
-    # print("\nJuego iniciado. A continuación puede ver la información sobre los jugadores y la mesa:")    DEBUG
-    # for jugador in jugadores:                                                                            DEBUG                     
-    #     print()                                                                                          DEBUG
-    #     print(jugador.toString1())                                                                       DEBUG
-    
     return baraja, jugadores, mesa
 
 def reiniciar_partida(jugadores, dealer):
@@ -35,10 +29,15 @@ def main():
     
     os.clear_console()
 
-    
     while opcion != -1:
         p.print_opciones_inicio()
-        opcion = int(input('Introduce una opción: '))
+        try:
+            opcion = int(input('Introduce una opción: '))
+        except ValueError:
+            os.clear_console()
+            print('Opción no válida. Inténtalo de nuevo.')
+            continue
+
         if opcion == 1:
             os.clear_console()
             baraja, jugadores, mesa = iniciar_juego_con_jugadores()
@@ -58,7 +57,6 @@ def main():
 
     while modo == 1:
         os.clear_console()
-        
 
         opcion = 0
         ronda = 1 # Ronda de apuestas: 1 = preflop, 2 = flop, 3 = turn, 4 = river
@@ -98,7 +96,12 @@ def main():
             
             p.print_opciones_juego()
 
-            opcion = int(input(f'Jugador {jugadores[jugador_actual].nombre}, introduce una opción: '))
+            try:
+                opcion = int(input(f'Jugador {jugadores[jugador_actual].nombre}, introduce una opción: '))
+            except ValueError:
+                os.clear_console()
+                print('Opción no válida. Inténtalo de nuevo.')
+                continue
             print()
             
             if opcion == 1:
@@ -130,7 +133,13 @@ def main():
                     os.clear_console()
                     print(f'Apuesta actual: {const.apuesta_actual} créditos.\n')
                     p.print_opciones_apuestas()
-                    opcion = int(input('Introduce una opción: '))
+                    try:
+                        opcion = int(input('Introduce una opción: '))
+                    except ValueError:
+                        os.clear_console()
+                        print('Opción no válida. Inténtalo de nuevo.')
+                        continue
+
                     if opcion == 1:
                         m.raise_bet(jugadores[jugador_actual], 5)
                         num_jugadores_restantes_por_preguntar = jugadores_activos - 1
@@ -150,7 +159,13 @@ def main():
                         opcion = 0
                         p.print_all_in()
                         while opcion != -1:
-                            opcion = int(input('Introduce una opción: '))
+                            try:
+                                opcion = int(input('Introduce una opción: '))
+                            except ValueError:
+                                os.clear_console()
+                                print('Opción no válida. Inténtalo de nuevo.')
+                                continue
+
                             if opcion == 11:
                                 p.print_all_in_suerte()
                                 m.all_in(jugadores[jugador_actual])
@@ -219,6 +234,7 @@ def main():
                 print('\nMesa --> Cartas: ? ? ?')
             
             else:
+                os.clear_console()
                 print('Opción no válida. Inténtalo de nuevo.')
             
             # Verificar si todos los jugadores han igualado la apuesta o se han retirado

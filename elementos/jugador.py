@@ -16,7 +16,7 @@ class Jugador:
 
     def toString1(self):
         fichas_str = ', '.join([f'{cantidad} fichas de {denominacion} créditos' for denominacion, cantidad in self.monedas.items()])
-        return f'{self.nombre} --> \n{self.dinero} créditos ({fichas_str}).\nCartas: {", ".join([carta.toString() for carta in self.cartas])}.'
+        return f'{self.nombre} --> \nCréditos: {self.dinero} créditos ({fichas_str}).\nCartas: {", ".join([carta.toString() for carta in self.cartas])}.'
 
     def toString2(self):
         return f'{self.nombre} --> {self.dinero} créditos.\n'

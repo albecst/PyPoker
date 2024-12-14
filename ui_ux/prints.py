@@ -14,7 +14,7 @@ def print_opciones_juego():
     print('6. Información sobre otros jugadores')	
     print('7. Información sobre la mesa')
     print('8. Añadir jugador')
-    print('9. Mostrar de nuevo las opciones')
+    print('9. Mostrar información sobre mí y sobre la mesa')
 
 def print_opciones_apuestas():
     print()

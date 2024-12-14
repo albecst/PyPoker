@@ -79,4 +79,8 @@ def mostrar_showdown(jugadores, mesa):
     print(f'Mesa --> Cartas: {", ".join([carta.toString() for carta in mesa])}')
     for jugador in jugadores:
         print(f'{jugador.nombre} --> Cartas: {", ".join([carta.toString() for carta in jugador.cartas])}')
+    
     # TODO: Lógica para calcular el ganador
+    
+    for jugador in jugadores:
+        jugador.apuesta_actual = 0

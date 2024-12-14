@@ -12,7 +12,6 @@ def call(jugador):
         print(f'{jugador.nombre} ya está igualado con la apuesta actual.')
 
 def raise_bet(jugador, cantidad):
-    print()
     print(f'{jugador.nombre} ha hecho raise de {cantidad} créditos.')
     total_apostado = 0
     monedas_apostadas = {}
